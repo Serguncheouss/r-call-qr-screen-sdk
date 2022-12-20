@@ -179,7 +179,7 @@ public class Screen implements Closeable {
      * @throws IOException if port not available or other IO error occurs
      */
     private String sendString(Command command, String text) throws IOException {
-        var sb = new StringBuilder(command.toString());
+        StringBuilder sb = new StringBuilder(command.toString());
 
         if (text != null) {
             sb.append(text);
@@ -199,7 +199,7 @@ public class Screen implements Closeable {
     private String sendBytes(byte[] bytes) throws IOException {
         clearPort();
 
-        try (var os = port.getOutputStream()){
+        try (OutputStream os = port.getOutputStream()){
             os.write(bytes);
             return readString();
         } catch (SerialPortTimeoutException ignored) {
@@ -213,7 +213,7 @@ public class Screen implements Closeable {
      * @throws IOException if port not available or other IO error occurs
      */
     private String readString() throws IOException {
-        try (var r = new BufferedReader(new InputStreamReader(port.getInputStream()))) {
+        try (BufferedReader r = new BufferedReader(new InputStreamReader(port.getInputStream()))) {
             return r.readLine();
         }
     }
@@ -225,7 +225,7 @@ public class Screen implements Closeable {
      * @return true if response is positive or false
      */
     private boolean checkResponse(Command command, String response) {
-        var positiveResponse = command.toString() + POSITIVE_ANSWER_STRING;
+        String positiveResponse = command.toString() + POSITIVE_ANSWER_STRING;
 
         return positiveResponse.equals(response);
     }
